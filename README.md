@@ -1,6 +1,6 @@
 # How to configure FRINX ODL to interact with ConfD 
 
-We have received a number of requests to share how FRINX ODL connects with Tail-f/Cisco. Cisco has published a whitepaper that provides an explanation, but we found a few steps missing to connect OpenDaylight with Conf-D work. These are our notes how we got it to work. Please let us know if you ran into any other questions and we will add those to this list.
+We have received a number of requests to share how FRINX ODL connects with Tail-f/Cisco. Cisco has published a whitepaper that provides some explanation, but we found a few steps missing. These are our notes how we got it to work. Please let us know if you run into any other questions and we will add those to this list.
 
 The Tail-f paper can be found here:
 http://www.tail-f.com/integrating-confd-opendaylight/
@@ -11,7 +11,7 @@ We have two hosts: 1) localhost and 2) confd host
 
 FRINX ODL runs on localhost.
 
-# Setting up FRINX ODL
+### Setting up FRINX ODL
 
 Download FRINX ODL from here:
 https://frinx.io/downloads
@@ -20,16 +20,23 @@ Unzip the downloaded file to a directory of your choice.
 
 go to the odl directory and run 
 
-'''
+```
 ./bin/karaf
-'''
+```
 
-if you are running FRINX ODL for the first time check out our operations guide here:
+If you are running FRINX ODL for the first time check out our operations guide here:
 https://frinx.io/frinx-documents/running-frinx-odl-distribution-for-the-first-time.html
 
 
-I have the following NETCONF features installed:
+In ODL you can install features with e.g.:
 
+```
+frinx-user@root>feature:install odl-netconf-all 
+```
+
+I had the following NETCONF features installed in FRINX ODL when I connected to ConfD:
+
+```
 frinx-user@root>
 frinx-user@root>feature:list -i | grep netconf
 odl-netconf-api                 | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | odl-netconf-1.1.3-Boron-SR3.2_3_1-frinxodl            | OpenDaylight :: Netconf :: API                    
@@ -49,25 +56,34 @@ odl-netconf-connector-all       | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | o
 odl-netconf-connector           | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | odl-controller-1.1.3-Boron-SR3.2_3_1-frinxodl         | OpenDaylight :: Netconf Connector :: Netconf Conne
 odl-netconf-connector-ssh       | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | odl-controller-1.1.3-Boron-SR3.2_3_1-frinxodl         | OpenDaylight :: Netconf Connector :: Netconf Conne
 odl-netconf-topology            | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | odl-controller-1.1.3-Boron-SR3.2_3_1-frinxodl         | OpenDaylight :: Netconf Topology :: Netconf Connec
-
-
-
---------
-
-copy the following yang files from xxx to {your_ODL_directory}/cache/
-
+```
 
 
 --------
-install confd on a ubuntu 16.04.1 host (user: admin, password: admin)
+One step that we found missing in the Tail-f guide was the need to copy a number of YANG files manually to the ODL cache directory.
 
-Download Confd for Linux from the Cisco web page
+copy the following yang files from here:
+https://github.com/FRINXio/confd/tree/master/yang
 
+to the "cache" folder in your local FRINX ODL directory:
+```
+{your_ODL_directory}/cache/
+```
+
+### Setting up ConfD on a VM
+
+We have created a Ubuntu 16.04.1 based VM and run it locally in Virtualbox. We call that VM "confd host" and use the following credentials: user: admin, password: admin
+
+The IP address of our confd host was 192.168.0.100. You need to substitute that with the IP address that you are using. 
+
+#### Download Confd for Linux from the Cisco web page
+```
 admin@16:~$ ls
 confd-basic-6.4.linux.x86_64.zip
+```
 
-Unzip the file
-
+#### Unzip the file
+```
 admin@16:~$ unzip confd-basic-6.4.linux.x86_64.zip 
 Archive:  confd-basic-6.4.linux.x86_64.zip
    creating: confd-basic-6.4.linux.x86_64/
@@ -88,9 +104,10 @@ drwxr-xr-x 4 admin admin     4096 Aug 24 20:29 ..
 -rw-r--r-- 1 admin admin   478587 Mar 22 12:01 confd-basic-6.4.libconfd.tar.gz
 -rwxr-xr-x 1 admin admin 10755987 Mar 22 12:02 confd-basic-6.4.linux.x86_64.installer.bin
 -rw-r--r-- 1 admin admin   120335 Apr  6  2015 ConfD_Basic_License_Agreement_1.1.pdf
+```
 
-Create a new directory and run the installer
-
+#### Create a new directory and run the installer
+```
 admin@16:~/confd-basic-6.4.linux.x86_64$ mkdir /home/admin/confd
 admin@16:~/confd-basic-6.4.linux.x86_64$ ./confd-basic-6.4.linux.x86_64.installer.bin ~/confd
 INFO  Unpacked confd-basic-6.4 in /home/admin/confd
@@ -100,11 +117,10 @@ INFO  Generating default SSH hostkey (this may take some time)
 INFO  SSH hostkey generated
 INFO  Environment set-up generated in /home/admin/confd/confdrc
 INFO  ConfD installation script finished
+```
 
-
-The directory now contains all confd files
-
-
+#### The directory now contains all confd files
+```
 admin@16:~/confd-basic-6.4.linux.x86_64$ cd ../confd
 admin@16:~/confd$ ls -al
 total 336
@@ -128,27 +144,26 @@ drwxr-xr-x  6 admin admin   4096 Mar 21 11:24 man
 drwxr-xr-x  3 admin admin   4096 Mar 22 12:01 src
 drwxr-xr-x  3 admin admin   4096 Mar 22 12:01 var
 -rw-r--r--  1 admin admin    228 Mar 22 12:01 VERSION
+```
 
-Run confd
-
+#### Run confd
+```
 admin@16:~/confd$ cd bin
 admin@16:~/confd/bin$ ./confd
+```
 
-Verify confd is running
-
+#### Verify confd is running
+```
 admin@16:~/confd/bin$ ps -ef | grep confd
 admin     3974     1  7 20:30 ?        00:00:00 /home/admin/confd/lib/confd/erts/bin/confd -K false -B -MHe true -- -root /home/admin/confd/lib/confd -progname confd -- -home /home/admin -- -smp disable -boot confd -delayed-detach -noshell -noinput -stacktrace_depth 24 -shutdown_time 30000 -conffile /home/admin/confd/etc/confd/confd.conf -max_fds 1024 -detached-fd 4
 admin     3990  3466  0 20:31 pts/0    00:00:00 grep --color=auto confd
 admin@16:~/confd/bin$ 
-
-
+```
 
 --------
-confd is using 2022 as the default port for NETCONF
-create a tunnel from localhost (127.0.0.1) to port 2022 on confd host (192.168.0.100)
-this session needs to stay active for as long as you connect to the confd host on port 2022
+Confd uses 2022 as the default port for NETCONF. Now we create a tunnel from localhost (127.0.0.1) to port 2022 on confd host (192.168.0.100). This session needs to stay active for as long as you connect to the confd host on port 2022.
 
-
+```
 Gerhards-MacBook-Pro:frinxit gwieser$ ssh admin@192.168.0.100 -L 2022:127.0.0.1:2022
 admin@192.168.0.100's password: 
 Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-92-generic x86_64)
@@ -164,10 +179,10 @@ Welcome to Ubuntu 16.04.1 LTS (GNU/Linux 4.4.0-92-generic x86_64)
 Last login: Thu Aug 24 20:26:35 2017 from 192.168.0.174
 admin@16:~$ 
 admin@16:~$ 
+```
 
---------
-test connectivity from localhost to confd host on port 2022 via tunnel
-
+#### Test connectivity from localhost to confd host on port 2022 via tunnel
+```
 Gerhards-MacBook-Pro:~ gwieser$ ssh admin@localhost -p 2022 -s netconf
 The authenticity of host '[localhost]:2022 ([::1]:2022)' can't be established.
 RSA key fingerprint is SHA256:dpcwCrr87NuqIiRrHdERbksKcmVLiicZTZ39tNu0W78.
@@ -208,11 +223,10 @@ admin@localhost's password:
 <capability>urn:ietf:params:xml:ns:yang:ietf-netconf-with-defaults?module=ietf-netconf-with-defaults&amp;revision=2011-06-01</capability>
 </capabilities>
 <session-id>27</session-id></hello>]]>]]>
+```
 
-----------
-
-Mount the confd node "CONFD1" in ODL
-
+#### Mount the confd node "CONFD1" in ODL
+```
 curl -X PUT \
   http://127.0.0.1:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/CONFD1 \
   -H 'authorization: Basic YWRtaW46YWRtaW4=' \
@@ -242,10 +256,10 @@ curl -X PUT \
   ]
 }
 '
+```
 
--------------
-check config data store in ODL
-
+#### Check config data store in ODL
+```
 curl -X GET \
   http://127.0.0.1:8181/restconf/config/network-topology:network-topology/topology/topology-netconf \
   -H 'accept: application/yang.data+json' \
@@ -256,9 +270,10 @@ curl -X GET \
   "input":{
   }
 }'
+```
 
-your output should look similar to the following:
-
+#### Your output should look similar to the following:
+```
 {
     "topology": [
         {
@@ -286,12 +301,10 @@ your output should look similar to the following:
         }
     ]
 }
+```
 
-
----------
-let's check if the node is present in the operational data store in ODL. 
-
-
+#### Let's check if the node is present in the operational data store in ODL. 
+```
 curl -X GET \
   http://127.0.0.1:8181/restconf/operational/network-topology:network-topology/topology/topology-netconf \
   -H 'accept: application/yang.data+json' \
@@ -302,11 +315,10 @@ curl -X GET \
   "input":{
   }
 }'
+```
 
-
-your output should look similar to:
-
-
+#### Your output should look similar to:
+```
 {
     "topology": [
         {
@@ -371,4 +383,4 @@ your output should look similar to:
         }
     ]
 }
-
+```
