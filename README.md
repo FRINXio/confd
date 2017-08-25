@@ -228,6 +228,8 @@ admin@localhost's password:
 <session-id>27</session-id></hello>]]>]]>
 ```
 
+If you see an output similar to the above, you know that NETCONF connectivity is working between localhost where ODL runs and your confd host.
+
 Now you can use the following curl commands from your localhost, or you can use our Postman collection here:
 https://github.com/FRINXio/confd/tree/master/postman_collection
 
