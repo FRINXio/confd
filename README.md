@@ -1,17 +1,28 @@
 # How to configure FRINX ODL to interact with ConfD 
 
+We have received a number of requests to share how FRINX ODL connects with Tail-f/Cisco. Cisco has published a whitepaper that provides an explanation, but we found a few steps missing to connect OpenDaylight with Conf-D work. These are our notes how we got it to work. Please let us know if you ran into any other questions and we will add those to this list.
+
+The Tail-f paper can be found here:
+http://www.tail-f.com/integrating-confd-opendaylight/
+
+## Setup
+
 We have two hosts: 1) localhost and 2) confd host
 
 FRINX ODL runs on localhost.
 
---------
-Download FRINX ODL
+# Setting up FRINX ODL
 
-unzip the downloaded file
+Download FRINX ODL from here:
+https://frinx.io/downloads
+
+Unzip the downloaded file to a directory of your choice.
 
 go to the odl directory and run 
 
+'''
 ./bin/karaf
+'''
 
 if you are running FRINX ODL for the first time check out our operations guide here:
 https://frinx.io/frinx-documents/running-frinx-odl-distribution-for-the-first-time.html
