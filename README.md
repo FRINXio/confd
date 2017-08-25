@@ -1,6 +1,6 @@
 # How to configure FRINX ODL to interact with ConfD 
 
-We have received a number of requests to share how FRINX ODL connects with Tail-f/Cisco. Cisco has published a whitepaper that provides some explanation, but we found a few steps missing. These are our notes how we got it to work. Please let us know if you run into any other questions and we will add those to this list.
+We have received a number of requests to share how FRINX ODL connects with Tail-f/Cisco. Cisco has published a whitepaper that provides some explanation, but we found a few steps missing. These are our notes how we got it to work. Please let us know if you run into any other questions and we will add those to this README document.
 
 The Tail-f paper can be found here:
 http://www.tail-f.com/integrating-confd-opendaylight/
@@ -28,7 +28,7 @@ If you are running FRINX ODL for the first time check out our operations guide h
 https://frinx.io/frinx-documents/running-frinx-odl-distribution-for-the-first-time.html
 
 
-In ODL you can install features in teh following way:
+In ODL you can install features in the following way:
 
 ```
 frinx-user@root>feature:install odl-netconf-all 
@@ -184,6 +184,7 @@ admin@16:~$
 ```
 
 #### Test connectivity from localhost to confd host on port 2022 via tunnel
+Open a new terminal window after the last step and type.
 ```
 Gerhards-MacBook-Pro:~ gwieser$ ssh admin@localhost -p 2022 -s netconf
 The authenticity of host '[localhost]:2022 ([::1]:2022)' can't be established.
@@ -227,7 +228,7 @@ admin@localhost's password:
 <session-id>27</session-id></hello>]]>]]>
 ```
 
-Now you can use the following curl commands from your localhost, or you can use our Postman collection with the same commands here:
+Now you can use the following curl commands from your localhost, or you can use our Postman collection here:
 https://github.com/FRINXio/confd/tree/master/postman_collection
 
 #### Mount the confd node "CONFD1" in ODL
@@ -308,7 +309,7 @@ curl -X GET \
 }
 ```
 
-#### Let's check if the node is present in the operational data store in ODL. 
+#### Let's check if the node is present in the operational data store in ODL.
 ```
 curl -X GET \
   http://127.0.0.1:8181/restconf/operational/network-topology:network-topology/topology/topology-netconf \
