@@ -70,6 +70,8 @@ to the "cache" folder in your local FRINX ODL directory:
 {your_ODL_directory}/cache/
 ```
 
+Also, we had to modify the file "tailf-aaa@2015-06-16.yang", since ODL was unable to compile a regex for password so we  replaced the type with string type instead. The modified file is included in our repository.
+
 ### Set up ConfD
 
 We have created a Ubuntu 16.04.1 based VM and run it locally in Virtualbox on our localhost. We call that VM "confd host" and use the following credentials: user: admin, password: admin
