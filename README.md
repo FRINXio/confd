@@ -28,13 +28,13 @@ If you are running FRINX ODL for the first time check out our operations guide h
 https://frinx.io/frinx-documents/running-frinx-odl-distribution-for-the-first-time.html
 
 
-In ODL you can install features with e.g.:
+In ODL you can install features in teh following way:
 
 ```
 frinx-user@root>feature:install odl-netconf-all 
 ```
 
-I had the following NETCONF features installed in FRINX ODL when I connected to ConfD:
+We had the following NETCONF features installed in FRINX ODL when we connected to ConfD:
 
 ```
 frinx-user@root>
@@ -60,9 +60,9 @@ odl-netconf-topology            | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | o
 
 
 --------
-One step that we found missing in the Tail-f guide was the need to copy a number of YANG files manually to the ODL cache directory.
+One step that we found missing in the Tail-f guide was the requirement to copy a number of YANG files manually to the ODL cache directory.
 
-copy the following yang files from here:
+Copy the following yang files from here:
 https://github.com/FRINXio/confd/tree/master/yang
 
 to the "cache" folder in your local FRINX ODL directory:
@@ -70,11 +70,11 @@ to the "cache" folder in your local FRINX ODL directory:
 {your_ODL_directory}/cache/
 ```
 
-### Setting up ConfD on a VM
+### Set up ConfD
 
-We have created a Ubuntu 16.04.1 based VM and run it locally in Virtualbox. We call that VM "confd host" and use the following credentials: user: admin, password: admin
+We have created a Ubuntu 16.04.1 based VM and run it locally in Virtualbox on our localhost. We call that VM "confd host" and use the following credentials: user: admin, password: admin
 
-The IP address of our confd host was 192.168.0.100. You need to substitute that with the IP address that you are using. 
+The IP address of our confd host was 192.168.0.100. You need to substitute that with the IP address that you are using in your setup. 
 
 #### Download Confd for Linux from the Cisco web page
 ```
@@ -159,8 +159,10 @@ admin     3974     1  7 20:30 ?        00:00:00 /home/admin/confd/lib/confd/erts
 admin     3990  3466  0 20:31 pts/0    00:00:00 grep --color=auto confd
 admin@16:~/confd/bin$ 
 ```
-
 --------
+
+### Putting it all together
+
 Confd uses 2022 as the default port for NETCONF. Now we create a tunnel from localhost (127.0.0.1) to port 2022 on confd host (192.168.0.100). This session needs to stay active for as long as you connect to the confd host on port 2022.
 
 ```
@@ -185,7 +187,7 @@ admin@16:~$
 ```
 Gerhards-MacBook-Pro:~ gwieser$ ssh admin@localhost -p 2022 -s netconf
 The authenticity of host '[localhost]:2022 ([::1]:2022)' can't be established.
-RSA key fingerprint is SHA256:dpcwCrr87NuqIiRrHdERbksKcmVLiicZTZ39tNu0W78.
+RSA key fingerprint is kjsdafhglajflkjfalskjflakj.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added '[localhost]:2022' (RSA) to the list of known hosts.
 admin@localhost's password: 
@@ -224,6 +226,9 @@ admin@localhost's password:
 </capabilities>
 <session-id>27</session-id></hello>]]>]]>
 ```
+
+Now you can use the following curl commands from your localhost, or you can use our Postman collection with the same commands here:
+https://github.com/FRINXio/confd/tree/master/postman_collection
 
 #### Mount the confd node "CONFD1" in ODL
 ```
