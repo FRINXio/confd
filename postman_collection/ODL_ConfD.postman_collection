@@ -1,0 +1,215 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ODL_ConfD",
+		"_postman_id": "2f466a6e-d158-5273-6378-bbb176f47857",
+		"description": "Connecting ODL to ConfD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "connect CONFD1",
+			"request": {
+				"url": "http://{{odl_ip}}:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/{{node_id}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"node\": [\n    {\n      \"node-id\": \"{{node_id}}\",\n      \"netconf-node-topology:host\": \"{{host}}\",\n      \"netconf-node-topology:port\": {{port}},\n      \"netconf-node-topology:keepalive-delay\": \"10\",\n      \"netconf-node-topology:tcp-only\": false,\n      \"netconf-node-topology:username\": \"{{username}}\",\n      \"netconf-node-topology:password\": \"{{password}}\",\n      \"netconf-node-topology:connection-timeout-millis\": \"1000\",\n      \"netconf-node-topology:default-request-timeout-millis\": \"1000\",\n      \"netconf-node-topology:yang-module-capabilities\":{\n\t      \"capability\": [\n\t       \"http://tail-f.com/yang/common?module=tailf-common&amp;revision=2017-03-08\",\n\t       \"http://tail-f.com/yang/common?module=tailf-cli-extensions&amp;revision=2017-03-08\",\n\t       \"http://tail-f.com/yang/common?module=tailf-meta-extensions&amp;revision=2017-03-08\"\n\t      ]\n      }\n    }\n  ]\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "topology-netconf OPER",
+			"request": {
+				"url": "http://{{odl_ip}}:8181/restconf/operational/network-topology:network-topology/topology/topology-netconf",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/yang.data+json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"input\":{\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "topology-netconf CONF",
+			"request": {
+				"url": "http://{{odl_ip}}:8181/restconf/config/network-topology:network-topology/topology/topology-netconf",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/yang.data+json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"input\":{\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CONFD1 OPER",
+			"request": {
+				"url": {
+					"raw": "http://{{odl_ip}}:8181/restconf/operational/network-topology:network-topology/topology/topology-netconf/node/{{node_id}}/yang-ext:mount/?prettyPrint=true",
+					"protocol": "http",
+					"host": [
+						"{{odl_ip}}"
+					],
+					"port": "8181",
+					"path": [
+						"restconf",
+						"operational",
+						"network-topology:network-topology",
+						"topology",
+						"topology-netconf",
+						"node",
+						"{{node_id}}",
+						"yang-ext:mount",
+						""
+					],
+					"query": [
+						{
+							"key": "prettyPrint",
+							"value": "true",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/yang.data+json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"input\":{\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CONFD1 CONF",
+			"request": {
+				"url": {
+					"raw": "http://{{odl_ip}}:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/{{node_id}}/yang-ext:mount/?prettyPrint=true",
+					"protocol": "http",
+					"host": [
+						"{{odl_ip}}"
+					],
+					"port": "8181",
+					"path": [
+						"restconf",
+						"config",
+						"network-topology:network-topology",
+						"topology",
+						"topology-netconf",
+						"node",
+						"{{node_id}}",
+						"yang-ext:mount",
+						""
+					],
+					"query": [
+						{
+							"key": "prettyPrint",
+							"value": "true",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Accept",
+						"value": "application/yang.data+json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"input\":{\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "disconnect CONFD1",
+			"request": {
+				"url": "http://{{odl_ip}}:8181/restconf/config/network-topology:network-topology/topology/topology-netconf/node/{{node_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4=",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
