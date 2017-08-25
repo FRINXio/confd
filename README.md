@@ -62,7 +62,7 @@ odl-netconf-topology            | 1.1.3-Boron-SR3.2_3_1-frinxodl | x         | o
 --------
 One step that we found missing in the Tail-f guide was the requirement to copy a number of YANG files manually to the ODL cache directory.
 
-Copy the following yang files from here:
+Copy the yang files from here:
 https://github.com/FRINXio/confd/tree/master/yang
 
 to the "cache" folder in your local FRINX ODL directory:
