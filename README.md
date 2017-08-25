@@ -185,7 +185,7 @@ admin@16:~$
 admin@16:~$ 
 ```
 
-#### Test connectivity from localhost to confd host on port 2022 via tunnel
+#### Test connectivity from localhost to confd host on port 2022 via port forwarding
 Open a new terminal window after the last step and type.
 ```
 Gerhards-MacBook-Pro:~ gwieser$ ssh admin@localhost -p 2022 -s netconf
